@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginUser, registerUser } from "../services/api";
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    // Load user from localStorage on initialization
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [error, setError] = useState(null);
 
   const handleLogin = async (email, password) => {
@@ -11,8 +15,10 @@ export const useAuth = () => {
     setError(null);
     try {
       const response = await loginUser(email, password);
+      const userData = { email, token: response.token };
       localStorage.setItem("token", response.token);
-      setUser({ email, token: response.token });
+      localStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
       setLoading(false);
       return { success: true };
     } catch (err) {
@@ -27,8 +33,10 @@ export const useAuth = () => {
     setError(null);
     try {
       const response = await registerUser(name, email, password, age, gender);
+      const userData = { name, email, age, gender, token: response.token };
       localStorage.setItem("token", response.token);
-      setUser({ email, token: response.token });
+      localStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
       setLoading(false);
       return { success: true };
     } catch (err) {

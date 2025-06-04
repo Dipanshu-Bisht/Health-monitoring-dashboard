@@ -41,3 +41,11 @@ export const fetchHealthLogs = async () => {
     }, 1000);
   });
 };
+
+export const deleteHealthLog = async (id) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: true, id });
+    }, 500);
+  });
+};
