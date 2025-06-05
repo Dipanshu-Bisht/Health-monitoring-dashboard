@@ -1,51 +1,51 @@
-export const loginUser = async (email, password) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (email === "test@example.com" && password === "password123") {
-        resolve({ success: true, token: "mock-jwt-token" });
-      } else {
-        reject(new Error("Invalid email or password"));
-      }
-    }, 1000);
-  });
+const BASE_URL = 'http://localhost:5000/api';
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': token ? token : ''
+  };
 };
 
-export const registerUser = async (name, email, password, age, gender) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (!name) {
-        reject(new Error("Name is required"));
-      } else if (email === "test@example.com") {
-        reject(new Error("Email already exists"));
-      } else if (!email || !password) {
-        reject(new Error("Email and password are required"));
-      } else if (age < 18) {
-        reject(new Error("Age must be at least 18"));
-      } else if (!gender) {
-        reject(new Error("Gender is required"));
-      } else {
-        resolve({ success: true, token: "mock-jwt-token" });
-      }
-    }, 1000);
+export const addHealthLog = async (logData) => {
+  const response = await fetch(`${BASE_URL}/health/add-log`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(logData)
   });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Failed to add log');
+  return data;
 };
 
-export const fetchHealthLogs = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: 1, date: "2025-06-01", type: "Sleep", value: "8 hours" },
-        { id: 2, date: "2025-06-02", type: "Water Intake", value: "2 liters" },
-        { id: 3, date: "2025-06-03", type: "Steps", value: "10,000" },
-      ]);
-    }, 1000);
+export const getHealthLogs = async () => {
+  const response = await fetch(`${BASE_URL}/health/logs`, {
+    method: 'GET',
+    headers: getAuthHeaders()
   });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch logs');
+  return data;
 };
 
-export const deleteHealthLog = async (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, id });
-    }, 500);
+export const updateHealthLog = async (logId, updatedData) => {
+  const response = await fetch(`${BASE_URL}/health/update-log/${logId}`, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(updatedData)
   });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Failed to update log');
+  return data;
+};
+
+export const deleteHealthLog = async (logId) => {
+  const response = await fetch(`${BASE_URL}/health/delete-log/${logId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Failed to delete log');
+  return data;
 };

@@ -1,30 +1,24 @@
-import { useState, useEffect } from "react";
-import { loginUser, registerUser } from "../services/api";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser, registerUser } from "../services/auth";
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(() => {
-    // Load user from localStorage on initialization
-    const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = async (email, password) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await loginUser(email, password);
-      const userData = { email, token: response.token };
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(userData));
-      setUser(userData);
-      setLoading(false);
+      const res = await loginUser(email, password);
+      navigate("/dashboard");
       return { success: true };
     } catch (err) {
-      setLoading(false);
       setError(err.message);
-      return { success: false, error: err.message };
+      return { success: false };
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -32,19 +26,16 @@ export const useAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await registerUser(name, email, password, age, gender);
-      const userData = { name, email, age, gender, token: response.token };
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(userData));
-      setUser(userData);
-      setLoading(false);
+      const res = await registerUser(name, email, password, age, gender);
+      navigate("/login");
       return { success: true };
     } catch (err) {
-      setLoading(false);
       setError(err.message);
-      return { success: false, error: err.message };
+      return { success: false };
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { handleLogin, handleSignup, loading, user, error };
+  return { handleLogin, handleSignup, loading, error };
 };
