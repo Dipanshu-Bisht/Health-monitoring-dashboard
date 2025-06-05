@@ -8,7 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { handleLogin, loading, error } = useAuth();
+  const { loginUser, loading, error } = useAuth();
   const navigate = useNavigate();
 
   const validate = () => {
@@ -23,7 +23,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      const result = await handleLogin(email, password);
+      const result = await loginUser(email, password);
       if (result.success) {
         toast.success("Login successful!", { position: "top-right" });
         // Redirect to dashboard after successful login
