@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchHealthLogs, deleteHealthLog } from "../services/api";
+import { getHealthLogs, deleteHealthLog } from "../services/api";
 
 export const useHealthLogs = () => {
   const [logs, setLogs] = useState([]);
@@ -12,7 +12,7 @@ export const useHealthLogs = () => {
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchHealthLogs();
+        const data = await getHealthLogs();
         setLogs(data);
         setLoading(false);
       } catch (err) {

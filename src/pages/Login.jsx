@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
@@ -8,8 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { loginUser, loading, error } = useAuth();
-  const navigate = useNavigate();
+  const { handleLogin, loading, error } = useAuth(); // <-- use handleLogin
 
   const validate = () => {
     const newErrors = {};
@@ -23,13 +21,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      const result = await loginUser(email, password);
+      const result = await handleLogin(email, password); // <-- use handleLogin
       if (result.success) {
         toast.success("Login successful!", { position: "top-right" });
-        // Redirect to dashboard after successful login
-        navigate("/dashboard");
+        // No need to navigate here, it's handled in the hook
       } else {
-        toast.error(result.error, { position: "top-right" });
+        toast.error(error || "Login failed", { position: "top-right" });
       }
     }
   };

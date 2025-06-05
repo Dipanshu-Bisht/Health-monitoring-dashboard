@@ -36,15 +36,13 @@ const Signup = () => {
         toast.success("Signup successful! Please log in.", { position: "top-right" });
         navigate("/login");
       } else {
-        toast.error(result.error, { position: "top-right" });
+        toast.error(result.error || "Signup failed", { position: "top-right" });
       }
     }
   };
 
   return (
-    <div
-      className="container mx-auto p-4 flex justify-center items-center min-h-[calc(100vh-64px)] animate-fadeIn"
-    >
+    <div className="container mx-auto p-4 flex justify-center items-center min-h-[calc(100vh-64px)] animate-fadeIn">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <div className="flex justify-center mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-pink-500 rounded-full flex items-center justify-center">
@@ -67,6 +65,7 @@ const Signup = () => {
         <h2 className="text-2xl font-bold text-center mb-2">Create Account</h2>
         <p className="text-center text-gray-500 mb-6">Join your health dashboard</p>
         <form onSubmit={handleSubmit}>
+          {/* Name */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="name">
               Name
@@ -98,6 +97,7 @@ const Signup = () => {
             </div>
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
           </div>
+          {/* Email */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="email">
               Email
@@ -129,6 +129,7 @@ const Signup = () => {
             </div>
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
+          {/* Password */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="password">
               Password
@@ -160,6 +161,7 @@ const Signup = () => {
             </div>
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
+          {/* Age */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="age">
               Age
@@ -191,6 +193,7 @@ const Signup = () => {
             </div>
             {errors.age && <p className="text-red-500 text-sm mt-1">{errors.age}</p>}
           </div>
+          {/* Gender */}
           <div className="mb-6">
             <label className="block text-gray-700 mb-2" htmlFor="gender">
               Gender

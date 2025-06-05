@@ -40,7 +40,8 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/",
+        // path: "/",
+        index: true, // this is the default child route for "/"
         element: <Navigate to="/login" />,
       },
     ],
