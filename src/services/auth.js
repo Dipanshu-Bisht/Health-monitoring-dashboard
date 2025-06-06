@@ -13,7 +13,14 @@ export const loginUser = async (email, password) => {
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || 'Login failed');
 
+    // Store token
     localStorage.setItem('token', data.token);
+
+    // Store user details as a JSON string
+    if (data.user) {
+      localStorage.setItem('user', JSON.stringify(data.user));
+    }
+
     return data;
   } catch (error) {
     throw error;

@@ -1,9 +1,10 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import App from "./App.jsx"; // Import App as the layout component
+import App from "./App.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AddLog from "./pages/AddLog.jsx";
+import EditLogPage from "./pages/EditLogPage.jsx"; // <-- Use the page, not the modal
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -13,7 +14,7 @@ const ProtectedRoute = ({ children }) => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // Use App as the root layout
+    element: <App />,
     children: [
       {
         path: "signup",
@@ -40,8 +41,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        // path: "/",
-        index: true, // this is the default child route for "/"
+        path: "edit-log/:id",
+        element: (
+          <ProtectedRoute>
+            <EditLogPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        index: true,
         element: <Navigate to="/login" />,
       },
     ],
