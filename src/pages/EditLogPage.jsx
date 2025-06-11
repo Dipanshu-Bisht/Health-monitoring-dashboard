@@ -104,7 +104,7 @@ const EditLogPage = () => {
               Cancel
             </button>
             <button
-              type="submit"
+              type="submit"     
               className="px-3 py-1 bg-blue-500 text-white rounded"
               disabled={saving}
             >
